@@ -100,10 +100,7 @@ extension ScreenshotGenerator {
     static func takeScreenshot() -> Bool {
         #if !os(macOS)
         let view = UIScreen.main.snapshotView(afterScreenUpdates: false)
-        let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
-        let image = renderer.image { _ in
-            view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-        }
+        guard let image = view.snapshot() else {return true}
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         #endif
         return true
@@ -130,5 +127,15 @@ struct Haptic {
         #if !os(macOS)
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         #endif
+    }
+}
+
+extension UIView {
+    func snapshot() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, UIScreen.main.scale)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
     }
 }
