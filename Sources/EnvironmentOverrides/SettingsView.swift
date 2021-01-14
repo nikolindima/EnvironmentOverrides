@@ -32,7 +32,7 @@ struct SettingsView: View {
                 textSizeSlider
                 layoutDirectionToggle
                 accessibilityToggle
-                screenshotButton.disabled(EnvironmentValues.isMac)
+             //   screenshotButton.disabled(EnvironmentValues.isMac)
             }.edgePadding()
         }.padding([.top, .bottom], 10)
         .onPreferenceChange(ControlWidth.self) {
